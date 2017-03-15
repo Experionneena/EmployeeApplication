@@ -1,0 +1,71 @@
+﻿@using DTOs;
+@model List<EmployeeLeaveDto>
+@{
+    ViewBag.Title = "ViewLeave";
+}
+
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.5/css/jquery.dataTables.css">
+
+<!-- jQuery -->
+<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.5/js/jquery.dataTables.js">
+</script>
+<div class="w3-bar w3-black" style="float:right; margin-right: 190px;font-size:20px">
+    <a class="w3-bar-item w3-button" href="HrHome">View Pending Leaves</a>&nbsp;&nbsp;
+    <a class="w3-bar-item w3-button" href="ViewALeave">View All Leaves</a>&nbsp;&nbsp;
+    <a class="w3-bar-item w3-button" href="Register">Add a New Employee</a>
+</div>
+<h2>Leaves</h2>
+@*<button type="button" id="add" class="btn-danger" style="border-style:none; float:right; margin-bottom: 70px;">@BaseController.GetName("ButtonAdd")</button>*@
+<table width="3000" cellspacing="2" style="margin-top:60px; border: 1px solid;" id="table">
+    <thead>
+        <tr>
+            <th style="display:none">Id</th>
+            <th style="width:auto">Name</th>
+            <th style="width:auto">Employee Id</th>
+            <th style="width:auto">From Date</th>
+            <th style="width:auto">To Date</th>
+            <th style="width:auto">Type</th>
+            <th style="width:auto">Reason</th>
+            <th style="width:auto">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                string fdate = item.FromDate.ToString("dd-MM-yyyy");
+                string date = item.ToDate.ToString("dd-MM-yyyy");
+                <tr style="width:auto">
+                    <td style="display:none">@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Empid</td>
+                    <td>@fdate</td>                   
+                    <td>@date</td>
+                    <td>@item.Type</td>
+                    <td>@item.Reason</td>
+                    <td>@item.Status</td>
+                  
+                </tr>
+
+            }
+        }
+    </tbody>
+
+
+</table>
+<script>
+    jQuery(function ($) {
+        $('#table').DataTable();
+    });
+
+</script>
+ 

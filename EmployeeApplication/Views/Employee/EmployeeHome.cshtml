@@ -1,0 +1,59 @@
+﻿@using DTOs;
+@model EmployeeDto
+@{
+    ViewBag.Title = "EmployeeHome";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+
+<link href="~/Content/Style.css" rel="stylesheet" />
+<h2>EmployeeHome</h2>
+<div class="container">
+    <p id="subhead">@Model.Name</p>
+    <button class="btn-danger" style="float:right;margin-right: 12%;" onclick="ApplyLeave()">APPLY LEAVE</button>
+    <div class="row test">
+        <div id="subhead">Work Details</div>
+        <div class="col-md-4">
+            <p><span class="glyphicon glyphicon-user"></span>Employee Id  :@Model.Empid</p>
+            <p><span class="glyphicon glyphicon-briefcase"></span>Designation   :@Model.Designation</p>
+            <p><span class="glyphicon glyphicon-tasks"></span>Band   :@Model.Band</p>
+        </div>
+     </div>
+    <div class="row test">
+        <div id="subhead">Contact Details</div>
+        <div class="col-md-4">
+            <p><span class="glyphicon glyphicon-phone"></span>Contact Number   :@Model.Contact</p>
+            <p><span class="glyphicon glyphicon-envelope"></span>Email Id   :@Model.Email</p>
+        </div>
+    </div>
+    <div class="row test">
+         <div id="subhead">Leave Details</div>
+         <div class="col-md-4">
+              <p><span class="glyphicon glyphicon-list"></span>Casual Leave   :@Model.Casual</p>
+              <p><span class="glyphicon glyphicon-list"></span>Sick Leave   :@Model.Sick</p>
+              <p><span class="glyphicon glyphicon-list"></span>Earned Leave   :@Model.Earned</p>
+         </div>
+    </div>
+</div>
+   <div style="float:right;">@Html.ActionLink("View Leave Status", "ViewStatus", new { id = @Model.Id })</div> 
+<script>
+    function ApplyLeave() {
+       window.location.href = "ApplyLeave";
+    }
+    function ViewStatus(id) {   
+        console.log(id);
+        $.ajax({
+            type: "POST",
+            url: "/Employee/ViewStatus",
+            data:{"Id" : id},
+            success: function (data) {
+                window.location.href = "DisplayStatus";
+            },
+            error: function () {
+                console.log("error");
+            }
+        });
+               
+    }
+</script>
+

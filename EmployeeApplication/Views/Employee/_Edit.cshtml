@@ -1,0 +1,123 @@
+﻿@using DTOs;
+@model LeaveDto
+@{
+    ViewBag.Title = "ApplyLeave";
+}
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "Casual Leave",
+        Value = "Casual"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Sick Leave",
+        Value = "Sick",
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Earned Leave",
+        Value = "Earned",
+    });
+}
+<html>
+<head>
+    @*<script src="~/Scripts/jquery-3.1.1.min.js"></script>*@
+    @*<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/bootstrap-datepicker.min.js"></script>*@
+</head>
+<body>
+    <h2>ApplyLeave</h2>
+    @using (Html.BeginForm("EditLeave", "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <hr />
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="form-group" style="display:none">
+            @Html.LabelFor(m => m.Id, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Id, new { id = "id", @class = "form-control", placeholder = "From Date" })
+
+            </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.FromDate, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.FromDate, new { id = "fromdate1", @class = "form-control", placeholder = "From Date" })
+
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ToDate, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.ToDate, new { id = "todate1", @class = "form-control", placeholder = "To Date" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Count, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Count, new { id = "count1", @class = "form-control", @readonly = "true" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Type, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.Type, listItems, "-- Select Leave Type --")
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Reason, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Reason, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="btn btn-default" value="Submit" />
+                </div>
+            </div>
+            }
+
+</body>
+
+</html>
+
+
+<script type="text/javascript">
+    console.log("haii");
+    //jQuery(function ($) {
+    //    console.log("haii");
+    //     $("#fromdate1").datepicker({
+
+    //    });
+    // });
+    //jQuery(function ($) {
+    //    console.log("haii");
+    //     $("#todate1").datepicker({
+
+    //     });
+    // });
+     jQuery(function ($) {
+         $("#count1").click(function(){
+             console.log("haii");
+             var firstDate = document.getElementById("fromdate1").value;
+             var lastDate = document.getElementById("todate1").value;
+             var count = daydiff(parseDate(document.getElementById("fromdate1").value), parseDate(document.getElementById("todate1").value));
+             document.getElementById("count1").value = count;
+         });
+     });
+     function parseDate(str) {
+         var mdy = str.split('/');
+         return new Date(mdy[2], mdy[1]-1,mdy[0]);
+     }
+
+     function daydiff(first, second) {
+         return Math.round((second - first) / (1000 * 60 * 60 * 24));
+     }
+</script>

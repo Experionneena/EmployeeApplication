@@ -1,0 +1,83 @@
+﻿@using DTOs;
+@model EmployeeDto
+@*@{
+    ViewBag.Title = "Index";
+}*@
+<h2>Login Here</h2>
+<div class="row">
+    <div class="col-md-8">
+        <section id="loginForm">
+          @using (Html.BeginForm("Login", "Employee", FormMethod.Post, new {id ="form", @class = "form-horizontal", role = "form" }))
+          {
+
+                @Html.AntiForgeryToken()
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Empid, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Empid, new { id = "empId", @class = "form-control" })
+                    <div id="validateEmpid"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.PasswordFor(m => m.Password, new { id = "password", @class = "form-control" })
+                        <div id="validatePassword"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="button" value="Log in" class="btn btn-default" onclick="Validate()" >Submit</button>
+                    </div>
+                </div>               
+          }
+        </section>
+        <div id="error"></div>
+    </div>
+  </div> 
+<script>
+    function Validate() {
+        if (($("#empId").val() == null || $("#empId").val() == "") && ($("#password").val() == null || $("#password").val() == "")) {
+            $("#validateEmpid").text("Please Enter Employee Id");
+            $("#validatePassword").text("Please Enter Password");
+        }
+        else if ($("#empId").val() == null || $("#empId").val() == "") {
+            $("#validateEmpid").text("Please Enter Employee Id");
+        }
+        else if ($("#password").val() == null || $("#password").val() == "") {
+            $("#validatePassword").text("Please Enter Password");
+         
+        }
+        else
+        {
+            var credentials = $("#form").serializeArray();
+
+            $.ajax({
+
+                type: "POST",
+                url: "/Employee/Login",
+                data: credentials,
+                success: function (data) {
+                    console.log(data.role);
+                    if (data.role == 1) {
+                        window.location.href = "../Employee/HrHome";
+                    }
+                    if (data.role == 0) {
+                        window.location.href = "../Employee/EmployeeHome";
+                    }
+                   
+
+                },
+                error: function () {
+                    $("#error").text("Invalid Login");
+                }
+            });
+        }
+            
+     
+        }
+    
+    
+</script>

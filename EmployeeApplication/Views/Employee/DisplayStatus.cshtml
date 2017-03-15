@@ -1,0 +1,107 @@
+﻿@using DTOs;
+@model IEnumerable<LeaveDto>
+@using EmployeeApplication.Controllers;
+
+@{
+    ViewBag.Title = "ViewStatus";
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+      rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.5/css/jquery.dataTables.css">
+
+<!-- jQuery -->
+<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.5/js/jquery.dataTables.js">
+</script>
+
+
+<h2>View Leave Status</h2>
+@*<button type="button" id="add" class="btn-danger" style="border-style:none; float:right; margin-bottom: 70px;">@BaseController.GetName("ButtonAdd")</button>*@
+<table width="3000" cellspacing="2" style="margin-top:60px; border: 1px solid;" id="table">
+    <thead>
+        <tr>
+            <th style="display:none">Id</th>
+           
+            <th style="width:auto">From Date</th>
+            <th style="width:auto">To Date</th>
+            <th style="width:auto">Type</th>
+            <th style="width:auto">Reason</th>
+            <th style="width:auto">Status</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                string fdate = item.FromDate.ToString("dd-MM-yyyy");
+                string date = item.ToDate.ToString("dd-MM-yyyy");
+                <tr style="width:auto">
+                    <td style="display:none">@item.Id</td>            
+                    <td>@fdate</td>
+                    <td>@date</td>
+                    <td>@item.Type</td>
+                    <td>@item.Reason</td>
+                    <td>@item.Status</td>
+                    <td>@Html.ActionLink("Delete", "Delete", new { id = @item.Id })</td>
+                    @if (@item.Status == "Pending")
+                    {
+                        <td><button type="button" id="Edit" class="btn-danger" onclick="Edit(@item.Id)">@BaseController.GetName("ButtonEdit")</button></td>
+                    }
+                </tr>
+
+            }
+        }
+    </tbody>
+
+
+</table>
+<div id='myModal' class='modal'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <p id='myModalContent' style="margin-left:20px">
+
+
+            </p>
+        </div>
+    </div>
+
+</div>
+<script>
+    jQuery(function ($) {
+        $('#table').DataTable();
+    });
+    function Edit(id) {
+        $('#myModal').modal();
+
+        console.log("haii");
+        $.ajax({
+
+            type: "GET",
+            url: "/Employee/Edit",
+            data: { id: id },
+            success: function (data) {
+                $('#myModalContent').html("");
+                $('#myModalContent').html(data);
+                  
+            },
+            error: function () {
+              
+            }
+        });
+       
+       
+    }
+
+</script>
+
+
